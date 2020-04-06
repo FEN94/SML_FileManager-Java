@@ -121,7 +121,10 @@ public class MainWindow extends JFrame {
 		JButton btn_search = new JButton("Search");
 		btn_search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (comboBox_printingType.getSelectedIndex() == 0 && rdbtn_gmc.isSelected()) {
+				if (textField_productCode.getText().isBlank()) {
+					JOptionPane.showMessageDialog (null, "Enter Product Code", "Warning", JOptionPane.WARNING_MESSAGE);
+				}
+				else if (comboBox_printingType.getSelectedIndex() == 0 && rdbtn_gmc.isSelected()) {
 					JOptionPane.showMessageDialog (null, "Select a printing type", "Warning", JOptionPane.WARNING_MESSAGE);
 				}
 				else {
