@@ -47,5 +47,13 @@ public class MainController {
 			// TODO: handle exception
 		}
 	}
+	
+	public static void openGmcTool() {
+		try {
+			Desktop.getDesktop().open(new File("C:/GMC/GMC_2020.jar"));
+		} catch (IOException e) {
+			// TODO: handle exception
+		}
+	}
 
 }

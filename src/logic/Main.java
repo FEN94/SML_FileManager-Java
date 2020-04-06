@@ -11,7 +11,8 @@ public class Main {
 		
 		ProductCode pc = new ProductCode("US2900A", "PFL", true, 1);
 		
-		MainController.openProductCode(pc);
+		//MainController.openProductCode(pc);
+		//MainController.openGmcTool();
 		
 //		try {
 //			Desktop.getDesktop().open(new File("C:\\GMC\\PFL\\US\\29\\US2900A\\WFD"));

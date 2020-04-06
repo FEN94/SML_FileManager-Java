@@ -22,6 +22,10 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 
 public class MainWindow extends JFrame {
 
@@ -48,9 +52,25 @@ public class MainWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public MainWindow() {
+		setTitle("SML File Manager");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 347, 251);
+		setBounds(100, 100, 347, 276);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu menuTools = new JMenu("Tools");
+		menuBar.add(menuTools);
+		
+		JMenuItem menuItem_newPC = new JMenuItem("New Product Code");
+		menuTools.add(menuItem_newPC);
+		
+		JSeparator separator = new JSeparator();
+		menuTools.add(separator);
+		
+		JMenuItem menuItem_openGmcTool = new JMenuItem("Open GMC Tool");
+		menuTools.add(menuItem_openGmcTool);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -147,6 +167,15 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				comboBox_printingType.setEnabled(true);
+			}
+		});
+		
+		menuItem_openGmcTool.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				MainController.openGmcTool();
 			}
 		});
 	}
