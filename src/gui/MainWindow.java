@@ -136,7 +136,7 @@ public class MainWindow extends JFrame {
 						printingType = printingTypeList[comboBox_printingType.getSelectedIndex()];
 					}
 					ProductCode productCode = new ProductCode(
-							textField_productCode.getText(),
+							textField_productCode.getText().strip(),
 							printingType,
 							subProgram,
 							1);
