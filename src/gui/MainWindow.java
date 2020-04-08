@@ -173,6 +173,16 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
+		menuItem_newPC.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				NewPC newPC = new NewPC();
+				newPC.setVisible(true);
+			}
+		});
+		
 		menuItem_openGmcTool.addActionListener(new ActionListener() {
 			
 			@Override
