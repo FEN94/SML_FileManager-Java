@@ -3,6 +3,7 @@ package logic;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainController {
@@ -53,6 +54,44 @@ public class MainController {
 			Desktop.getDesktop().open(new File("C:/GMC/GMC_2020.jar"));
 		} catch (IOException e) {
 			// TODO: handle exception
+		}
+	}
+	
+	private static void styleFolder(int number, String path) {
+		for (int i = 1; i <= number; i++) {
+			if (String.valueOf(i).length() == 1) {
+				new File(path + "/00" + String.valueOf(i)).mkdirs();
+			}
+			else if (String.valueOf(i).length() == 2) {
+				new File(path + "/0" + String.valueOf(i)).mkdirs();
+			}
+			else {
+				new File(path + "/" + String.valueOf(i)).mkdirs();
+			}
+		}
+	}
+	
+	public static void createFolder(ArrayList<ProductCode> pcList, String gmc_nl) {
+		//Create folder for each Product Code
+		for (ProductCode productCode : pcList) {
+			String path = "C:/" + gmc_nl + "/" + productCode.getPrintingType() + "/" + productCode.getProgram();
+			// Check if have sub-program
+			if (!productCode.getSubProgram().isBlank()) {
+				path += "/" + productCode.getSubProgram();
+			}
+			path += "/" + productCode.getProductCode();
+			// Make new Product Code folder
+			File folder = new File(path + "/WFD");
+			folder.mkdirs();
+			// Create styles folders if more than one
+			if (productCode.getStyles() > 1) {
+				MainController.styleFolder(productCode.getStyles(), folder.getPath());
+			}
+			// Check if have images
+			if (productCode.isImage()) {
+				File logoFolder = new File(path + "/LOGO");
+				logoFolder.mkdirs();
+			}
 		}
 	}
 

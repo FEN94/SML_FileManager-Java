@@ -4,6 +4,7 @@ public class ProductCode {
 	
 	private String productCode, printingType, program, subProgram;
 	private int styles;
+	private boolean image;
 	
 	public ProductCode() {
 		
@@ -11,10 +12,11 @@ public class ProductCode {
 		this.printingType = "";
 		this.program = "";
 		this.subProgram = "";
+		this.image = false;
 		this.styles = 1;
 	}
 	
-	public ProductCode(String productCode, String printingType, boolean subProgram, int styles) {
+	public ProductCode(String productCode, String printingType, boolean subProgram, boolean image, int styles) {
 		this.productCode = productCode;
 		this.printingType = printingType;
 		this.program = productCode.substring(0, 2);
@@ -22,6 +24,7 @@ public class ProductCode {
 			this.subProgram = productCode.substring(2, 4);
 		else
 			this.subProgram = "";
+		this.image = image;
 		this.styles = styles;
 	}
 
@@ -55,6 +58,14 @@ public class ProductCode {
 
 	public void setSubProgram(String subProgram) {
 		this.subProgram = subProgram;
+	}
+
+	public boolean isImage() {
+		return image;
+	}
+
+	public void setImage(boolean image) {
+		this.image = image;
 	}
 
 	public int getStyles() {

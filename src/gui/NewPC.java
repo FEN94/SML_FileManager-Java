@@ -73,6 +73,14 @@ public class NewPC extends JFrame {
 		JButton btnClose = new JButton("Close");
 		btnClose.setBounds(752, 387, 89, 23);
 		contentPane.add(btnClose);
+		btnClose.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		JButton btnCreate = new JButton("Create");
 		btnCreate.setBounds(653, 387, 89, 23);

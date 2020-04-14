@@ -139,6 +139,7 @@ public class MainWindow extends JFrame {
 							textField_productCode.getText().strip(),
 							printingType,
 							subProgram,
+							false,
 							1);
 					try {
 						MainController.openProductCode(productCode);
