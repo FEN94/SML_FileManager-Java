@@ -76,17 +76,17 @@ public class MainController {
 		for (ProductCode productCode : pcList) {
 			String path = "C:/" + gmc_nl + "/" + productCode.getPrintingType() + "/" + productCode.getProgram();
 			// Check if have sub-program
-			if (!productCode.getSubProgram().isBlank()) {
+			if (!productCode.getSubProgram().isBlank()) 
 				path += "/" + productCode.getSubProgram();
-			}
 			path += "/" + productCode.getProductCode();
+			if (gmc_nl == "GMC")
+				path += "/WFD";
 			// Make new Product Code folder
-			File folder = new File(path + "/WFD");
+			File folder = new File(path);
 			folder.mkdirs();
 			// Create styles folders if more than one
-			if (productCode.getStyles() > 1) {
+			if (productCode.getStyles() > 1)
 				MainController.styleFolder(productCode.getStyles(), folder.getPath());
-			}
 			// Check if have images
 			if (productCode.isImage()) {
 				File logoFolder = new File(path + "/LOGO");

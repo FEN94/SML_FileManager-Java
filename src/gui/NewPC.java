@@ -1,15 +1,21 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
+import logic.MainController;
+import logic.ProductCode;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -73,18 +79,11 @@ public class NewPC extends JFrame {
 		JButton btnClose = new JButton("Close");
 		btnClose.setBounds(752, 387, 89, 23);
 		contentPane.add(btnClose);
-		btnClose.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 		
 		JButton btnCreate = new JButton("Create");
 		btnCreate.setBounds(653, 387, 89, 23);
 		contentPane.add(btnCreate);
+		
 		
 		JLabel lblProductCode = new JLabel("ProductCode:");
 		lblProductCode.setBounds(10, 60, 89, 14);
@@ -113,10 +112,14 @@ public class NewPC extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if (comboBoxPrintingType.isEnabled()) 
+				if (comboBoxPrintingType.isEnabled()) {
 					comboBoxPrintingType.setEnabled(false);
-				else
+					checkBoxLogo.setEnabled(false);
+				}
+				else {
 					comboBoxPrintingType.setEnabled(true);
+					checkBoxLogo.setEnabled(true);
+				}
 			}
 		});
 		
@@ -172,6 +175,7 @@ public class NewPC extends JFrame {
 					else {
 						model.addRow(new Object[]{textFieldPC.getText().strip(), printingTypeList[comboBoxPrintingType.getSelectedIndex()], style, subProgram, logo});
 					}
+					setThermalGmc(checkBoxNiceLabel);
 				}
 				
 			}
@@ -193,6 +197,19 @@ public class NewPC extends JFrame {
 				else if (row < 0 && model.getRowCount() > 0) {
 					model.removeRow(model.getRowCount()-1);
 				}
+				setThermalGmc(checkBoxNiceLabel);
+			}
+		});
+		
+		btnCreate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (tableProductCode.getModel().getRowCount() == 0)
+					JOptionPane.showMessageDialog (null, "Table can't be empty", "Warning", JOptionPane.WARNING_MESSAGE);
+				else
+					createFolders(checkBoxNiceLabel);
 			}
 		});
 		
@@ -211,5 +228,45 @@ public class NewPC extends JFrame {
 				this.tableProductCode.setModel(model);
 			}
 		}
+	}
+	
+	private void setThermalGmc(JCheckBox checkBox) {
+		int rowCount = tableProductCode.getModel().getRowCount();
+		// Check if table has at least one row
+		if (rowCount >= 1) {
+			DefaultTableModel model = (DefaultTableModel)tableProductCode.getModel();
+			checkBox.setEnabled(false);
+		}
+		else {
+			checkBox.setEnabled(true);
+		}
+	}
+	
+	private void createFolders(JCheckBox checkBox) {
+		DefaultTableModel model = (DefaultTableModel)tableProductCode.getModel();
+		int rowCount = model.getRowCount();
+		ArrayList<ProductCode> pcList = new ArrayList<ProductCode>();
+		String pc, printingType, gmc_nl = "";
+		boolean subProgram, image = false;
+		for (int i = 0; i < rowCount; i++) {
+			pc = (String)model.getValueAt(i, 0);
+			printingType = (String)model.getValueAt(i, 1);
+			int styles = Integer.parseInt((String)model.getValueAt(i, 2));
+			if ((String)model.getValueAt(i, 3) == "Yes") 
+				subProgram = true;
+			else
+				subProgram = false;
+			if (!checkBox.isSelected() && (String)model.getValueAt(i, 4) == "Yes")
+				image = true;
+			else
+				image = false;
+			ProductCode productCode = new ProductCode(pc, printingType, subProgram, image, styles);
+			pcList.add(productCode);
+		}
+		if (checkBox.isSelected())
+			gmc_nl = "NiceLabel";
+		else
+			gmc_nl = "GMC";
+		MainController.createFolder(pcList, gmc_nl);
 	}
 }
