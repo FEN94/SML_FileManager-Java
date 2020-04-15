@@ -208,8 +208,10 @@ public class NewPC extends JFrame {
 				// TODO Auto-generated method stub
 				if (tableProductCode.getModel().getRowCount() == 0)
 					JOptionPane.showMessageDialog (null, "Table can't be empty", "Warning", JOptionPane.WARNING_MESSAGE);
-				else
+				else {
 					createFolders(checkBoxNiceLabel);
+					JOptionPane.showMessageDialog (null, "Folders created successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		});
 		
