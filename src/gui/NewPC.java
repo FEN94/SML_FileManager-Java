@@ -5,6 +5,7 @@ import java.awt.Checkbox;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -23,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JSpinner;
@@ -33,6 +35,7 @@ public class NewPC extends JFrame {
 	private JTable tableProductCode;
 	private JTextField textFieldPC;
 	private JCheckBox checkBoxLogo;
+	private JTextField textFieldChooseFile;
 
 	/**
 	 * Launch the application.
@@ -54,6 +57,7 @@ public class NewPC extends JFrame {
 	 * Create the frame.
 	 */
 	public NewPC() {
+		setTitle("New Folder");
 		setResizable(false);
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 867, 457);
@@ -73,6 +77,7 @@ public class NewPC extends JFrame {
 		panelProductCode.add(scrollPanePC);
 		
 		tableProductCode = new JTable();
+		tableProductCode.setEnabled(false);
 		scrollPanePC.setViewportView(tableProductCode);
 		
 		
@@ -84,65 +89,124 @@ public class NewPC extends JFrame {
 		btnCreate.setBounds(653, 387, 89, 23);
 		contentPane.add(btnCreate);
 		
+		String[] printingTypeList = new String[] {"<Select type>", "Arc_Thermal", "Digital", "Offset", "PFL", "Woven"};
+		
+		JPanel panelInformation = new JPanel();
+		panelInformation.setBorder(new TitledBorder(null, "Information", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelInformation.setBounds(10, 40, 311, 197);
+		contentPane.add(panelInformation);
+		panelInformation.setLayout(null);
+		
 		
 		JLabel lblProductCode = new JLabel("ProductCode:");
-		lblProductCode.setBounds(10, 60, 89, 14);
-		contentPane.add(lblProductCode);
+		lblProductCode.setBounds(10, 30, 89, 14);
+		panelInformation.add(lblProductCode);
 		
 		textFieldPC = new JTextField();
-		textFieldPC.setBounds(109, 57, 103, 20);
-		contentPane.add(textFieldPC);
+		textFieldPC.setBounds(109, 27, 103, 20);
+		panelInformation.add(textFieldPC);
 		textFieldPC.setColumns(10);
 		
 		JLabel lblPrintingType = new JLabel("Printing Type:");
-		lblPrintingType.setBounds(10, 92, 89, 14);
-		contentPane.add(lblPrintingType);
-		
-		String[] printingTypeList = new String[] {"<Select type>", "Arc_Thermal", "Digital", "Offset", "PFL", "Woven"};
+		lblPrintingType.setBounds(10, 62, 89, 14);
+		panelInformation.add(lblPrintingType);
 		JComboBox comboBoxPrintingType = new JComboBox();
+		comboBoxPrintingType.setBounds(109, 58, 103, 22);
+		panelInformation.add(comboBoxPrintingType);
 		comboBoxPrintingType.setModel(new DefaultComboBoxModel(printingTypeList));
-		comboBoxPrintingType.setBounds(109, 88, 103, 22);
-		contentPane.add(comboBoxPrintingType);
 		
 		JCheckBox checkBoxNiceLabel = new JCheckBox("NiceLabel");
-		checkBoxNiceLabel.setBounds(218, 88, 97, 23);
-		contentPane.add(checkBoxNiceLabel);
-		checkBoxNiceLabel.addActionListener(new ActionListener() {
+		checkBoxNiceLabel.setBounds(218, 58, 87, 23);
+		panelInformation.add(checkBoxNiceLabel);
+		
+		JLabel lblStyle = new JLabel("No. of styles");
+		lblStyle.setBounds(10, 94, 89, 14);
+		panelInformation.add(lblStyle);
+		
+		JSpinner spinnerStyle = new JSpinner();
+		spinnerStyle.setBounds(109, 91, 48, 20);
+		panelInformation.add(spinnerStyle);
+		spinnerStyle.setValue(1);
+		
+		JCheckBox checkBoxSubProgram = new JCheckBox("Sub-Program");
+		checkBoxSubProgram.setBounds(163, 87, 103, 23);
+		panelInformation.add(checkBoxSubProgram);
+		
+		checkBoxLogo = new JCheckBox("LOGO");
+		checkBoxLogo.setBounds(163, 113, 97, 23);
+		panelInformation.add(checkBoxLogo);
+		
+		JButton btnAdd = new JButton("Add");
+		btnAdd.setBounds(61, 143, 89, 23);
+		panelInformation.add(btnAdd);
+		
+		JButton btnRemove = new JButton("Remove");
+		btnRemove.setBounds(160, 143, 89, 23);
+		panelInformation.add(btnRemove);
+		
+		JPanel panelImport = new JPanel();
+		panelImport.setBorder(new TitledBorder(null, "Import List", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelImport.setBounds(10, 248, 311, 92);
+		contentPane.add(panelImport);
+		panelImport.setLayout(null);
+		
+		JLabel lblChooseFile = new JLabel("Choose File:");
+		lblChooseFile.setBounds(10, 21, 71, 14);
+		panelImport.add(lblChooseFile);
+		
+		textFieldChooseFile = new JTextField();
+		textFieldChooseFile.setBounds(140, 18, 161, 20);
+		panelImport.add(textFieldChooseFile);
+		textFieldChooseFile.setColumns(10);
+		
+		JButton btnChooseFile = new JButton("...");
+		btnChooseFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fc = new JFileChooser();
+				int selection = fc.showOpenDialog(fc);
+				
+				if (selection == JFileChooser.APPROVE_OPTION) {
+					// get selected file
+					File file = fc.getSelectedFile();
+					textFieldChooseFile.setText(file.getAbsolutePath());
+				}
+			}
+		});
+		btnChooseFile.setBounds(91, 17, 41, 23);
+		panelImport.add(btnChooseFile);
+		
+		JButton btnImport = new JButton("Import");
+		btnImport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (textFieldChooseFile.getText().equals("")) {
+					JOptionPane.showMessageDialog (null, "Please select a file", "Warning", JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					String[][] data = MainController.importProductCode(textFieldChooseFile.getText());
+					DefaultTableModel model = new DefaultTableModel(data, new String[] {"Product Code", "Printing Type", "Style", "Sub-Program", "LOGO"});
+					tableProductCode.setModel(model);
+					setThermalGmc(checkBoxNiceLabel);
+				}
+			}
+		});
+		btnImport.setBounds(212, 58, 89, 23);
+		panelImport.add(btnImport);
+		btnRemove.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if (comboBoxPrintingType.isEnabled()) {
-					comboBoxPrintingType.setEnabled(false);
-					checkBoxLogo.setEnabled(false);
+				DefaultTableModel model = (DefaultTableModel)tableProductCode.getModel();
+				int row = tableProductCode.getSelectedRow();
+				if (row >= 0) {
+					model.removeRow(row);
 				}
-				else {
-					comboBoxPrintingType.setEnabled(true);
-					checkBoxLogo.setEnabled(true);
+				else if (row < 0 && model.getRowCount() > 0) {
+					model.removeRow(model.getRowCount()-1);
 				}
+				setThermalGmc(checkBoxNiceLabel);
 			}
 		});
-		
-		JCheckBox checkBoxSubProgram = new JCheckBox("Sub-Program");
-		checkBoxSubProgram.setBounds(163, 117, 103, 23);
-		contentPane.add(checkBoxSubProgram);
-		
-		checkBoxLogo = new JCheckBox("LOGO");
-		checkBoxLogo.setBounds(163, 143, 97, 23);
-		contentPane.add(checkBoxLogo);
-		
-		JLabel lblStyle = new JLabel("No. of styles");
-		lblStyle.setBounds(10, 124, 89, 14);
-		contentPane.add(lblStyle);
-		
-		JSpinner spinnerStyle = new JSpinner();
-		spinnerStyle.setBounds(109, 121, 48, 20);
-		spinnerStyle.setValue(1);
-		contentPane.add(spinnerStyle);
-		
-		JButton btnAdd = new JButton("Add");
-		btnAdd.setBounds(61, 173, 89, 23);
-		contentPane.add(btnAdd);
 		btnAdd.addActionListener(new ActionListener() {
 			
 			@Override
@@ -180,24 +244,19 @@ public class NewPC extends JFrame {
 				
 			}
 		});
-		
-		JButton btnRemove = new JButton("Remove");
-		btnRemove.setBounds(160, 173, 89, 23);
-		contentPane.add(btnRemove);
-		btnRemove.addActionListener(new ActionListener() {
+		checkBoxNiceLabel.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				DefaultTableModel model = (DefaultTableModel)tableProductCode.getModel();
-				int row = tableProductCode.getSelectedRow();
-				if (row >= 0) {
-					model.removeRow(row);
+				if (comboBoxPrintingType.isEnabled()) {
+					comboBoxPrintingType.setEnabled(false);
+					checkBoxLogo.setEnabled(false);
 				}
-				else if (row < 0 && model.getRowCount() > 0) {
-					model.removeRow(model.getRowCount()-1);
+				else {
+					comboBoxPrintingType.setEnabled(true);
+					checkBoxLogo.setEnabled(true);
 				}
-				setThermalGmc(checkBoxNiceLabel);
 			}
 		});
 		
@@ -236,7 +295,6 @@ public class NewPC extends JFrame {
 		int rowCount = tableProductCode.getModel().getRowCount();
 		// Check if table has at least one row
 		if (rowCount >= 1) {
-			DefaultTableModel model = (DefaultTableModel)tableProductCode.getModel();
 			checkBox.setEnabled(false);
 		}
 		else {

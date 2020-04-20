@@ -2,9 +2,17 @@ package logic;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class MainController {
 	
@@ -92,6 +100,57 @@ public class MainController {
 				File logoFolder = new File(path + "/LOGO");
 				logoFolder.mkdirs();
 			}
+		}
+	}
+	
+	public static String[][] importProductCode(String filePath){
+
+		try {
+			//get Excel workbook
+			FileInputStream fis = new FileInputStream(filePath);
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(fis);
+			//get Excel sheet
+			XSSFSheet sheet = wb.getSheetAt(0);
+			//create data array
+			String[][] data = new String[sheet.getLastRowNum()][5];
+			//create evaluator to evaluate the type of data in the cell
+			FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+			//get row iterator from sheet
+			Iterator<Row> rowIt = sheet.iterator();
+			//delete headers Row
+			rowIt.next();
+			rowIt.remove();
+			
+			int iRow = 0;
+			
+			while (rowIt.hasNext()) {
+				int iCell = 0;
+				Row row = rowIt.next();
+				//get cell iterator from Row
+				Iterator<Cell> cellIt = row.iterator();
+				while (cellIt.hasNext()) {
+					Cell cell = cellIt.next();
+					
+					switch (evaluator.evaluateInCell(cell).getCellType()) {
+					case Cell.CELL_TYPE_NUMERIC:
+						data[iRow][iCell] = String.valueOf((int)cell.getNumericCellValue());
+						break;
+					case Cell.CELL_TYPE_STRING:
+						data[iRow][iCell] = cell.getStringCellValue();
+						break;
+
+					default:
+						break;
+					}
+					iCell++;
+				}
+				iRow++;
+			}
+			return data;
+		} catch (IOException e) {
+			// TODO: handle exception
+			return null;
 		}
 	}
 
