@@ -35,7 +35,7 @@ public class MainController {
 		
 		if (Arrays.asList(folderList).contains(pc)) {
 			if (!productCode.getPrintingType().equalsIgnoreCase("Thermal")) {
-				path += "/" + pc + "/WFD";
+				path += "/" + pc;
 				return path;
 			}
 			else
@@ -87,8 +87,8 @@ public class MainController {
 			if (!productCode.getSubProgram().isBlank()) 
 				path += "/" + productCode.getSubProgram();
 			path += "/" + productCode.getProductCode();
-			if (gmc_nl == "GMC")
-				path += "/WFD";
+			/*if (gmc_nl == "GMC")
+				path += "/WFD";*/
 			// Make new Product Code folder
 			File folder = new File(path);
 			folder.mkdirs();
@@ -97,12 +97,15 @@ public class MainController {
 				MainController.styleFolder(productCode.getStyles(), folder.getPath());
 			// Check if have images
 			if (productCode.isImage()) {
-				File logoFolder = new File(path + "/LOGO");
+				File logoFolder = new File(path + "/WFD");
+				logoFolder.mkdirs();
+				logoFolder = new File(path + "/LOGO");
 				logoFolder.mkdirs();
 			}
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static String[][] importProductCode(String filePath){
 
 		try {
