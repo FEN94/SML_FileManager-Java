@@ -270,6 +270,9 @@ public class NewPC extends JFrame {
 				else {
 					createFolders(checkBoxNiceLabel);
 					JOptionPane.showMessageDialog (null, "Folders created successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+					DefaultTableModel model = (DefaultTableModel)tableProductCode.getModel();
+					model.setRowCount(0);
+					checkBoxNiceLabel.setEnabled(true);
 				}
 			}
 		});
