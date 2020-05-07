@@ -80,13 +80,8 @@ public class NewPC extends JFrame {
 		tableProductCode.setEnabled(false);
 		scrollPanePC.setViewportView(tableProductCode);
 		
-		
-		JButton btnClose = new JButton("Close");
-		btnClose.setBounds(752, 387, 89, 23);
-		contentPane.add(btnClose);
-		
 		JButton btnCreate = new JButton("Create");
-		btnCreate.setBounds(653, 387, 89, 23);
+		btnCreate.setBounds(752, 387, 89, 23);
 		contentPane.add(btnCreate);
 		
 		String[] printingTypeList = new String[] {"<Select type>", "Arc_Thermal", "Digital", "Offset", "PFL", "Woven"};

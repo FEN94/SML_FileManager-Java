@@ -65,6 +65,13 @@ public class MainController {
 		}
 	}
 	
+	private static void logoFolder(String path) {
+		File logoFolder = new File(path + "/WFD");
+		logoFolder.mkdirs();
+		logoFolder = new File(path + "/LOGO");
+		logoFolder.mkdirs();
+	}
+	
 	private static void styleFolder(int number, String path, boolean logo) {
 		for (int i = 1; i <= number; i++) {
 			if (String.valueOf(i).length() == 1) {
@@ -72,17 +79,24 @@ public class MainController {
 				new File(style_path).mkdirs();
 				// Check if have images
 				if (logo) {
-					File logoFolder = new File(style_path + "/WFD");
-					logoFolder.mkdirs();
-					logoFolder = new File(style_path + "/LOGO");
-					logoFolder.mkdirs();
+					MainController.logoFolder(style_path);
 				}
 			}
 			else if (String.valueOf(i).length() == 2) {
-				new File(path + "/0" + String.valueOf(i)).mkdirs();
+				String style_path = path + "/0" + String.valueOf(i);
+				new File(style_path).mkdirs();
+				// Check if have images
+				if (logo) {
+					MainController.logoFolder(style_path);
+				}
 			}
 			else {
-				new File(path + "/" + String.valueOf(i)).mkdirs();
+				String style_path = path + "/" + String.valueOf(i);
+				new File(style_path).mkdirs();
+				// Check if have images
+				if (logo) {
+					MainController.logoFolder(style_path);
+				}
 			}
 		}
 	}
@@ -103,6 +117,8 @@ public class MainController {
 			// Create styles folders if more than one
 			if (productCode.getStyles() > 1)
 				MainController.styleFolder(productCode.getStyles(), folder.getPath(), productCode.isImage());
+			else if (productCode.getStyles() == 1 && productCode.isImage())
+				MainController.logoFolder(folder.getPath());
 		}
 	}
 	
